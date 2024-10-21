@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "messagingservice"
+version = "0.1.0"
+description = ""
+authors = ["Spaceocean <spaceocean@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["all"], version = "^0.115.2"}
+sqlalchemy = "^2.0.36"
+psycopg2-binary = "^2.9.10"
+python-jose = "^3.3.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
