@@ -1,9 +1,9 @@
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from app.models import Base
+from messagingservice.models import Base
 from alembic import context
-from app.db_config import get_database_url
+from messagingservice.db_config import get_database_url
 
 
 config = context.config

@@ -5,7 +5,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from jose import jwt
 from datetime import datetime, timedelta, timezone
-from app import database, schemas, models, utils
+from messagingservice import database, schemas, models, utils
 
 
 # Конфигурация JWT
@@ -60,4 +60,4 @@ def login(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("main:messagingservice", reload=True)
