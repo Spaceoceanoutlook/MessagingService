@@ -20,7 +20,7 @@ host = os.getenv("DB_HOST")
 dbname = os.getenv("DB_NAME")
 
 # Формирование строки подключения
-config.set_main_option('sqlalchemy.url', f'postgresql://{username}:{password}@{host}/{dbname}')
+config.set_main_option('sqlalchemy.url', f'postgresql+psycopg2://{username}:{password}@{host}/{dbname}')
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
