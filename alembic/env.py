@@ -1,26 +1,14 @@
 from logging.config import fileConfig
-
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from app.models import Base
+from app.database import Base
 from alembic import context
+from app.db_config import get_database_url
 
-import os
-from dotenv import load_dotenv
 
 config = context.config
 
-# Загрузка переменных окружения из файла .env
-load_dotenv()
-
-# Получение данных из переменных окружения
-username = os.getenv("DB_USERNAME")
-password = os.getenv("DB_PASSWORD")
-host = os.getenv("DB_HOST")
-dbname = os.getenv("DB_NAME")
-
-# Формирование строки подключения
-config.set_main_option('sqlalchemy.url', f'postgresql+psycopg2://{username}:{password}@{host}/{dbname}')
+config.set_main_option('sqlalchemy.url', get_database_url())
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

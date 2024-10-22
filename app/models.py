@@ -1,7 +1,6 @@
 from sqlalchemy import Integer, String
-from sqlalchemy.orm import declarative_base, Mapped, mapped_column
-
-Base = declarative_base()
+from sqlalchemy.orm import Mapped, mapped_column
+from app.database import Base
 
 
 class User(Base):
