@@ -19,7 +19,7 @@ app = FastAPI()
 
 
 def get_db() -> Session:
-    db = database.SessionLocal
+    db = database.SessionLocal()
     try:
         yield db
     finally:
@@ -38,7 +38,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 # Регистрация пользователя
 @app.post("/register", response_model=schemas.UserResponse)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    if db.query(models.User).filter(models.User.username == user.username).first():
+    if db.query(models.User).filter(models.User.username == user.username).first():  # Изменено с name на username
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already registered")
 
     hashed_password = utils.hash_password(user.password)
@@ -46,13 +46,13 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return schemas.UserResponse(id=db_user.id, username=db_user.username, email=db_user.email)  # Возврат UserResponse
 
 
 # Аутентификация пользователя
 @app.post("/login")
 def login(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.username == user.username).first()
+    db_user = db.query(models.User).filter(models.User.username == user.username).first()  # Изменено с name на username
     if not db_user or not utils.verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
