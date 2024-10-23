@@ -60,4 +60,4 @@ def login(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:messagingservice", reload=True)
+    uvicorn.run("main:app", reload=True)
