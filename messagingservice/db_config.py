@@ -5,8 +5,9 @@ load_dotenv()
 
 
 def get_database_url():
-    username = os.getenv("DB_USERNAME")
-    password = os.getenv("DB_PASSWORD")
-    host = os.getenv("DB_HOST")
-    dbname = os.getenv("DB_NAME")
-    return f"postgresql+psycopg2://{username}:{password}@{host}/{dbname}"
+    username = os.getenv("POSTGRES_USER")
+    password = os.getenv("POSTGRES_PASSWORD")
+    host = os.getenv("POSTGRES_HOST")
+    port = os.getenv("POSTGRES_PORT")
+    dbname = os.getenv("POSTGRES_DB")
+    return f"postgresql+psycopg2://{username}:{password}@{host}:{port}/{dbname}"
