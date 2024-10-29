@@ -1,9 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 from messagingservice.api_v1.users.crud import router as users_router
+from messagingservice.api_v1.chat.crud import router as chat_router
 
 app = FastAPI()
 app.include_router(users_router)
+app.include_router(chat_router)
 
 
 if __name__ == "__main__":
