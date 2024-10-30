@@ -1,10 +1,12 @@
-import secrets
+import os
 from fastapi import HTTPException, status
 from jose import jwt, JWTError
 from datetime import datetime, timezone, timedelta
 from fastapi.responses import RedirectResponse
+from dotenv import load_dotenv
 
-SECRET_KEY = secrets.token_urlsafe(32)
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10
 
