@@ -4,7 +4,8 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from messagingservice import schemas, models, utils
 from messagingservice.database import get_db
-from .service import get_user_by_username, set_access_token
+from .service import get_user_by_username
+from .jwt import set_access_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 templates = Jinja2Templates(directory="templates")
@@ -32,7 +33,6 @@ def register(username: str = Form(...), email: str = Form(...), password: str = 
     db.refresh(db_user)
     response = RedirectResponse(url="/profile", status_code=status.HTTP_302_FOUND)
     set_access_token(response, db_user.username)
-    response.set_cookie(key="username", value=db_user.username)
     return response
 
 
@@ -54,5 +54,4 @@ def login(username: str = Form(...), password: str = Form(...),
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     response = RedirectResponse(url="/profile", status_code=status.HTTP_302_FOUND)
     set_access_token(response, db_user.username)
-    response.set_cookie(key="username", value=db_user.username)
     return response

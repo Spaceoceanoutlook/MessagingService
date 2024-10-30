@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status, APIRouter, Request, Cookie
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
+from messagingservice.api_v1.auth.jwt import verify_token
 
 router = APIRouter(tags=["Profile"])
 templates = Jinja2Templates(directory="templates")
@@ -10,7 +11,6 @@ templates = Jinja2Templates(directory="templates")
             response_class=HTMLResponse,
             summary="Главная страница")
 def root(request: Request):
-    # return RedirectResponse(url="/auth/register")
     return templates.TemplateResponse("index.html", {"request": request})
 
 
@@ -20,4 +20,6 @@ def root(request: Request):
 def get_index(request: Request, access_token: str = Cookie(None)):
     if access_token is None:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authenticated")
-    return templates.TemplateResponse("profile.html", {"request": request, "username": request.cookies.get("username")})
+    user_data = verify_token(access_token)
+    username = user_data.get("username")
+    return templates.TemplateResponse("profile.html", {"request": request, "username": username})
