@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форма регистрации</title>
+    <title>Регистрация</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,7 +76,7 @@
 
 <div class="container">
     <h2>Регистрация</h2>
-    <form action="/users/register" method="POST">
+    <form action="/auth/register" method="POST">
     <div class="form-group">
         <label for="name">Имя:</label>
         <input type="text" id="name" name="username" required>
@@ -92,7 +92,7 @@
     <button type="submit">Зарегистрироваться</button>
 </form>
     <div class="footer">
-        <p>Уже есть аккаунт? <a href="/users/login">Войти</a></p>
+        <p>Уже есть аккаунт? <a href="/auth/login">Войти</a></p>
     </div>
 </div>
 
