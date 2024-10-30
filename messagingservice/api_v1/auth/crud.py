@@ -2,28 +2,17 @@ from fastapi import Depends, HTTPException, status, APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
-from datetime import timedelta
 from messagingservice import schemas, models, utils
 from messagingservice.database import get_db
-from .jwt import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from .service import get_user_by_username, set_access_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 templates = Jinja2Templates(directory="templates")
 
 
-def set_access_token(response: RedirectResponse, username: str):
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": username}, expires_delta=access_token_expires)
-    response.delete_cookie(key="access_token")
-    response.set_cookie(key="access_token", value=access_token, httponly=True)
-    return response
-
-
-def get_user_by_username(db: Session, username: str):
-    return db.query(models.User).filter(models.User.username == username).first()
-
-
-@router.get("/register", response_class=HTMLResponse)
+@router.get("/register",
+            response_class=HTMLResponse,
+            summary="Форма HTML для регистрации")
 def get_register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
@@ -42,10 +31,14 @@ def register(username: str = Form(...), email: str = Form(...), password: str = 
     db.commit()
     db.refresh(db_user)
     response = RedirectResponse(url="/profile", status_code=status.HTTP_302_FOUND)
-    return set_access_token(response, db_user.username)
+    set_access_token(response, db_user.username)
+    response.set_cookie(key="username", value=db_user.username)
+    return response
 
 
-@router.get("/login", response_class=HTMLResponse)
+@router.get("/login",
+            response_class=HTMLResponse,
+            summary="Форма HTML для аутентификации")
 def get_login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
@@ -60,4 +53,6 @@ def login(username: str = Form(...), password: str = Form(...),
     if not db_user or not utils.verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     response = RedirectResponse(url="/profile", status_code=status.HTTP_302_FOUND)
-    return set_access_token(response, db_user.username)
+    set_access_token(response, db_user.username)
+    response.set_cookie(key="username", value=db_user.username)
+    return response
