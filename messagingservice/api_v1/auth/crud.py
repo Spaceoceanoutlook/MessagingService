@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from messagingservice import schemas, models, utils
 from messagingservice.database import get_db
 from .service import get_user_by_username
-from .utils_jwt import set_access_token, decode_jwt
+from .utils_jwt import set_access_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 templates = Jinja2Templates(directory="templates")

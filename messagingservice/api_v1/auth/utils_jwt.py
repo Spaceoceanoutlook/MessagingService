@@ -29,5 +29,7 @@ def decode_jwt(
 
 def set_access_token(response: RedirectResponse, username: str):
     access_token = encode_jwt(payload={"username": username})
-    response.set_cookie(key="access_token", value=access_token, httponly=True)
+    response.set_cookie(
+        key="access_token", value=access_token, httponly=True, secure=True
+    )
     return response
