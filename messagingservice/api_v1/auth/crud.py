@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from messagingservice import schemas, models, utils
 from messagingservice.database import get_db
 from .service import get_user_by_username
-from .utils_jwt import set_access_token
+from .utils_jwt import set_access_token, set_refresh_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 templates = Jinja2Templates(directory="templates")
@@ -44,6 +44,7 @@ def register(
     db.refresh(db_user)
     response = RedirectResponse(url="/profile", status_code=status.HTTP_302_FOUND)
     set_access_token(response, db_user.username)
+    set_refresh_token(response, db_user.username)
     return response
 
 
@@ -70,4 +71,5 @@ def login(
         )
     response = RedirectResponse(url="/profile", status_code=status.HTTP_302_FOUND)
     set_access_token(response, db_user.username)
+    set_refresh_token(response, db_user.username)
     return response
