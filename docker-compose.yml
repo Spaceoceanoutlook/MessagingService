@@ -4,7 +4,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -16,18 +16,9 @@ services:
       - db
     env_file:
       - .env
-    volumes:
-      - .:/app
     command: >
       sh -c "/usr/local/bin/wait-for-it.sh db:5432 --timeout=30 -- poetry run alembic upgrade head &&
             poetry run uvicorn messagingservice.main:app --host 0.0.0.0 --port 8000"
-
-  adminer:
-    image: adminer
-    ports:
-      - 8080:8080
-    depends_on:
-      - db
 
 volumes:
   postgres_data:

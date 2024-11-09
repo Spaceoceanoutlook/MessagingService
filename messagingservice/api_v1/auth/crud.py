@@ -8,7 +8,7 @@ from .service import get_user_by_username
 from .utils_jwt import set_access_token, set_refresh_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="messagingservice/templates")
 
 
 @router.get(

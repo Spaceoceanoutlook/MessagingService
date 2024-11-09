@@ -6,7 +6,7 @@ from messagingservice.api_v1.auth.utils_jwt import decode_jwt, set_access_token
 
 
 router = APIRouter(tags=["Profile"])
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="messagingservice/templates")
 
 
 @router.get("/", response_class=HTMLResponse, summary="Главная страница")
