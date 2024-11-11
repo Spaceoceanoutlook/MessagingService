@@ -4,13 +4,14 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
-RUN apt-get update && apt-get install -y \
+RUN apk update && apk add --no-cache \
     wget \
     gcc \
-    libpq-dev \
+    musl-dev \
+    postgresql-dev \
     netcat-openbsd \
     openssl \
-    && rm -rf /var/lib/apt/lists/* \
+    bash \
     && pip install poetry
 COPY pyproject.toml poetry.lock ./
 RUN wget -O /usr/local/bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
