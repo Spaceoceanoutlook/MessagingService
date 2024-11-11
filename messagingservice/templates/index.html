@@ -27,6 +27,12 @@
             text-decoration: none;
             font-weight: bold;
         }
+        .logout-link {
+            color: #ffffff; /* Цвет текста для ссылки "Выход" */
+            text-decoration: none; /* Убираем подчеркивание */
+            font-weight: bold; /* Жирный шрифт */
+            cursor: pointer; /* Указатель при наведении */
+        }
         .container {
             margin: 20px auto;
         }
@@ -45,6 +51,9 @@
         <a href="/auth/login">Вход</a>
         <a href="/auth/register">Регистрация</a>
         <a href="/profile">Профиль</a>
+        <form action="/auth/logout" method="post" style="display:inline;">
+            <a href="#" class="logout-link" onclick="this.closest('form').submit();">Выход</a>
+        </form>
     </nav>
 </header>
 

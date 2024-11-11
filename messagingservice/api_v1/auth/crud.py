@@ -73,3 +73,15 @@ def login(
     set_access_token(response, db_user.username)
     set_refresh_token(response, db_user.username)
     return response
+
+
+@router.post(
+    "/logout",
+    summary="Logout пользователя",
+    description="Удаляет токены доступа и обновления для пользователя",
+)
+def logout():
+    response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    response.set_cookie(key="access_token", value="", httponly=True, expires=0)
+    response.set_cookie(key="refresh_token", value="", httponly=True, expires=0)
+    return response

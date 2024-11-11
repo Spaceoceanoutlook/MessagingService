@@ -21,19 +21,17 @@ def get_index(
     refresh_token: str = Cookie(None),
 ):
     if access_token is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not authenticated"
+        return templates.TemplateResponse(
+            "profile.html", {"request": request, "username": "ты кто?"}
         )
-
     try:
         user_data = decode_jwt(access_token)
         username = user_data.get("username")
     except jwt.ExpiredSignatureError:
         if refresh_token is None:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Not authenticated"
+            return templates.TemplateResponse(
+                "profile.html", {"request": request, "username": "ты кто?"}
             )
-
         try:
             refresh_data = decode_jwt(refresh_token)
             username = refresh_data.get("username")
